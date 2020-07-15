@@ -82,6 +82,27 @@ public class MainActivity extends AppCompatActivity {
                 return true;
             }
         });
+
+        // 点击按钮，发送文本框内容
+        button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                String content = editText.getText().toString();
+                editText.setText("");
+                int len = content.length();
+                if (0 != len) {
+                    Msg sendText = new Msg(content, Msg.TYPE_SEND);
+                    msgList.add(sendText);
+                    msgAdapter.notifyItemInserted(msgList.size() - 1);
+                    recyclerView.scrollToPosition(msgList.size() - 1);
+                    String reply = "你方才输入文本的长度为：" + String.valueOf(len) + "。";
+                    Msg replyText = new Msg(reply, Msg.TYPE_RECEIVE);
+                    msgList.add(replyText);
+                    msgAdapter.notifyItemInserted(msgList.size() - 1);
+                    recyclerView.scrollToPosition(msgList.size() - 1);
+                }
+            }
+        });
     }
 
     @Override
