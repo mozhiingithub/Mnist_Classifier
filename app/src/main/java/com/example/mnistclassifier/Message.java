@@ -17,13 +17,13 @@ public class Message {
     public Message(String content, int type) {
         this.text_content = content;
         this.type = type;
-        this.content_type=Message.TYPE_TEXT;
+        this.content_type = Message.TYPE_TEXT;
     }
 
     public Message(Bitmap content, int type) {
         this.img_content = content;
         this.type = type;
-        this.content_type=Message.TYPE_IMG;
+        this.content_type = Message.TYPE_IMG;
     }
 
     public int getType() {
