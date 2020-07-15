@@ -3,7 +3,7 @@ package com.example.mnistclassifier;
 
 import android.graphics.Bitmap;
 
-public class Message {
+public class Msg {
     public static final int TYPE_RECEIVE = 0;
     public static final int TYPE_SEND = 1;
     public static final int TYPE_TEXT = 2;
@@ -14,16 +14,16 @@ public class Message {
     private int type;
     private int content_type;
 
-    public Message(String content, int type) {
+    public Msg(String content, int type) {
         this.text_content = content;
         this.type = type;
-        this.content_type = Message.TYPE_TEXT;
+        this.content_type = Msg.TYPE_TEXT;
     }
 
-    public Message(Bitmap content, int type) {
+    public Msg(Bitmap content, int type) {
         this.img_content = content;
         this.type = type;
-        this.content_type = Message.TYPE_IMG;
+        this.content_type = Msg.TYPE_IMG;
     }
 
     public int getType() {
