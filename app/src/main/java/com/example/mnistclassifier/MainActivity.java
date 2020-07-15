@@ -5,6 +5,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
 import android.app.Activity;
@@ -17,26 +19,41 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Log;
 import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
     private final static String TAG = "MainActivity";
     private final static int GET_PERMISSION = 123;
     private final static int GET_PHOTO = 321;
-    private ImageView imageView;
-    private TextView textView;
+    private EditText editText;
+    private Button button;
+    private RecyclerView recyclerView;
+    private MsgAdapter msgAdapter;
+    private List<Msg> msgList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.layout);
-        imageView = findViewById(R.id.imageView);
-        textView = findViewById(R.id.textView);
+        setContentView(R.layout.main_layout);
+        editText = (EditText) findViewById(R.id.input_text);
+        button = (Button) findViewById(R.id.send_button);
+        msgList = new ArrayList<>();
+        msgAdapter = new MsgAdapter(msgList);
+        recyclerView = (RecyclerView) findViewById(R.id.msg_recycler_view);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(this);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(msgAdapter);
+
+
         //检查权限
         if (ContextCompat.checkSelfPermission(MainActivity.this,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
@@ -55,13 +72,14 @@ public class MainActivity extends AppCompatActivity {
                     }, GET_PERMISSION);
         }
 
-        //点击图片区域，跳转至相册，选取图片
-        imageView.setOnClickListener(new View.OnClickListener() {
+        //长按按钮，跳转至相册，选取图片
+        button.setOnLongClickListener(new View.OnLongClickListener() {
             @Override
-            public void onClick(View view) {
+            public boolean onLongClick(View view) {
                 Intent intent = new Intent(Intent.ACTION_PICK, null);
                 intent.setDataAndType(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, "image/*");
                 startActivityForResult(intent, GET_PHOTO);
+                return true;
             }
         });
     }
@@ -72,12 +90,25 @@ public class MainActivity extends AppCompatActivity {
             case GET_PHOTO:
 
                 try {
+                    // 获取图片
                     Uri uri = data.getData();
                     Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(uri));
-                    imageView.setImageBitmap(bitmap);
+
+                    // 生成一个新的图片信息，加入信息列表并显示
+                    Msg sendImg = new Msg(bitmap, Msg.TYPE_SEND);
+                    msgList.add(sendImg);
+                    msgAdapter.notifyItemInserted(msgList.size() - 1);
+                    recyclerView.scrollToPosition(msgList.size() - 1);
+
+                    // 对图片进行分类
                     Classifier classifier = new Classifier(this);
                     String res = classifier.classify(bitmap);
-                    textView.setText(res);
+
+                    // 生成一个新的图片信息，加入信息列表并显示
+                    Msg receiveText = new Msg(res, Msg.TYPE_RECEIVE);
+                    msgList.add(receiveText);
+                    msgAdapter.notifyItemInserted(msgList.size() - 1);
+                    recyclerView.scrollToPosition(msgList.size() - 1);
 
 //                    Toast.makeText(this, res, Toast.LENGTH_SHORT).show();
                 } catch (NullPointerException e) {
