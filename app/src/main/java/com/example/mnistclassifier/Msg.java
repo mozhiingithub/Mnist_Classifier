@@ -11,8 +11,8 @@ public class Msg {
     private String text_content;
     private Bitmap img_content;
 
-    private int type;
-    private int content_type;
+    private int type; // 判断信息属于“左侧/接收侧”还是“右侧/发送侧”
+    private int content_type; // 判断信息属于文本还是图片
 
     public Msg(String content, int type) {
         this.text_content = content;

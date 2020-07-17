@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--聊天信息列表区域布局。padding设为10dp，区域内的所有元素会与边界保持10dp距离。-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
@@ -7,6 +9,10 @@
     android:orientation="vertical"
     android:padding="10dp">
 
+    <!--左侧/接收侧的文本信息父布局-->
+    <!--高度被限度为60dp，以限制布局背景高度-->
+    <!--重力设为左，则文本内容会靠左显示-->
+    <!--文本信息框背景为白色-->
     <LinearLayout
         android:id="@+id/left_text_layout"
         android:layout_width="wrap_content"
@@ -15,6 +21,9 @@
         android:background="@android:color/background_light"
         android:orientation="horizontal">
 
+        <!--左侧文本信息框。该框遵循父布局重力设置，向布局左侧靠拢。-->
+        <!--框内部重力为中，框内文字居中布局。-->
+        <!--margin设为10dp，则文本框会对父布局边界距离10dp-->
         <TextView
             android:id="@+id/left_text"
             android:layout_width="wrap_content"
@@ -23,6 +32,7 @@
             android:layout_margin="10dp" />
     </LinearLayout>
 
+    <!--右侧/发送侧文本信息框，除背景颜色及重力方向外，与左侧相同。-->
     <LinearLayout
         android:id="@+id/right_text_layout"
         android:layout_width="wrap_content"
@@ -39,6 +49,10 @@
             android:layout_margin="10dp" />
     </LinearLayout>
 
+    <!--左侧/接收侧的图片信息父布局-->
+    <!--高度被限度为120dp，以限制布局背景高度及图片信息的尺寸-->
+    <!--重力设为左，则图片内容会靠左显示-->
+    <!--文本信息框背景为白色-->
     <LinearLayout
         android:id="@+id/left_img_layout"
         android:layout_width="120dp"
@@ -47,6 +61,11 @@
         android:background="@android:color/background_light"
         android:orientation="horizontal">
 
+        <!--左侧图片信息框。该框遵循父布局重力设置，向布局左侧靠拢。-->
+        <!--框内部重力为中，框内图片居中布局。-->
+        <!--margin设为10dp，则文本框会对父布局边界距离10dp-->
+        <!--由于改框的长宽设为与父布局匹配，且父布局高度固定为120dp，-->
+        <!--因而无论原图片是和尺寸，都会固定显示为长或宽110dp。-->
         <ImageView
             android:id="@+id/left_img"
             android:layout_width="match_parent"
@@ -56,6 +75,7 @@
             tools:srcCompat="@tools:sample/avatars" />
     </LinearLayout>
 
+    <!--右侧/发送侧图片信息框，除背景颜色及重力方向外，与左侧相同。-->
     <LinearLayout
         android:id="@+id/right_img_layout"
         android:layout_width="120dp"

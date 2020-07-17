@@ -1,10 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!--纵向的线性布局，放置聊天信息列表及文本信息发送区-->
+<!--整个布局背景设为深灰，而聊天区背景为透明，因而聊天区呈现灰色-->
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/darker_gray"
     android:orientation="vertical">
 
+    <!--聊天区，高度设为0dp，权重设为1，则聊天区会占满文本发送框以外的全部区域-->
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/msg_recycler_view"
         android:layout_width="match_parent"
@@ -13,12 +17,15 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
+    <!--发送区域的水平线性子布局，放置发送框和发送按钮-->
+    <!--布局背景取白色，因而发送框呈白色-->
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@android:color/background_light"
         android:orientation="horizontal">
 
+        <!--发送框，宽度设为0dp，权重设为1，如此，发送框会占满除按钮外的所有区域-->
         <EditText
             android:id="@+id/input_text"
             android:layout_width="0dp"
@@ -28,6 +35,7 @@
             android:hint="点击按钮发文，长按发图"
             android:inputType="textPersonName" />
 
+        <!--发送按钮-->
         <Button
             android:id="@+id/send_button"
             android:layout_width="wrap_content"

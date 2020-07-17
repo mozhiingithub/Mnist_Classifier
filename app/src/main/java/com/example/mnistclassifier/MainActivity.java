@@ -32,13 +32,13 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
 
     private final static String TAG = "MainActivity";
-    private final static int GET_PERMISSION = 123;
-    private final static int GET_PHOTO = 321;
-    private EditText editText;
-    private Button button;
-    private RecyclerView recyclerView;
-    private MsgAdapter msgAdapter;
-    private List<Msg> msgList;
+    private final static int GET_PERMISSION = 123; // 获取权限的请求码
+    private final static int GET_PHOTO = 321; // 获取图片的请求码
+    private EditText editText; // 文本发送框
+    private Button button; // 发送按钮
+    private RecyclerView recyclerView; // 聊天信息框
+    private MsgAdapter msgAdapter; // 聊天信息框适配器
+    private List<Msg> msgList; // 信息列表
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,11 +47,11 @@ public class MainActivity extends AppCompatActivity {
         editText = (EditText) findViewById(R.id.input_text);
         button = (Button) findViewById(R.id.send_button);
         msgList = new ArrayList<>();
-        msgAdapter = new MsgAdapter(msgList);
+        msgAdapter = new MsgAdapter(msgList); // 适配器适配信息列表
         recyclerView = (RecyclerView) findViewById(R.id.msg_recycler_view);
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
-        recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(msgAdapter);
+        recyclerView.setLayoutManager(layoutManager); // 聊天信息框添加一个布局管理者
+        recyclerView.setAdapter(msgAdapter); // 聊天信息框添加一个适配器
 
 
         //检查权限
@@ -87,14 +87,14 @@ public class MainActivity extends AppCompatActivity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                String content = editText.getText().toString();
-                editText.setText("");
+                String content = editText.getText().toString(); // 获取文本框内容
+                editText.setText(""); // 将文本框清零
                 int len = content.length();
-                if (0 != len) {
-                    Msg sendText = new Msg(content, Msg.TYPE_SEND);
-                    msgList.add(sendText);
-                    msgAdapter.notifyItemInserted(msgList.size() - 1);
-                    recyclerView.scrollToPosition(msgList.size() - 1);
+                if (0 != len) { // 获取文本内容非空
+                    Msg sendText = new Msg(content, Msg.TYPE_SEND); // 新建一个发送侧文本信息
+                    msgList.add(sendText); // 将信息添加进列表
+                    msgAdapter.notifyItemInserted(msgList.size() - 1); // 示意聊天框有新信息加入
+                    recyclerView.scrollToPosition(msgList.size() - 1); // 将聊天列表跳转至最下面
                     String reply = "你方才输入文本的长度为：" + String.valueOf(len) + "。";
                     Msg replyText = new Msg(reply, Msg.TYPE_RECEIVE);
                     msgList.add(replyText);

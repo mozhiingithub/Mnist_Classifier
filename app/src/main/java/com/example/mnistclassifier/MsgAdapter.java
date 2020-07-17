@@ -25,18 +25,18 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Msg msg = msgList.get(position);
-        if (Msg.TYPE_RECEIVE == msg.getType()) {
-            holder.rightTextLayout.setVisibility(View.GONE);
+        Msg msg = msgList.get(position); // 获取指定位置信息
+        if (Msg.TYPE_RECEIVE == msg.getType()) { // 信息属左侧/接收侧
+            holder.rightTextLayout.setVisibility(View.GONE); // 将右侧的信息布局设为不可见
             holder.rightImgLayout.setVisibility(View.GONE);
-            if (Msg.TYPE_TEXT == msg.getContent_type()) {
-                holder.leftTextLayout.setVisibility(View.VISIBLE);
-                holder.leftImgLayout.setVisibility(View.GONE);
-                holder.leftText.setText(msg.getText_content());
-            } else if (Msg.TYPE_IMG == msg.getContent_type()) {
-                holder.leftTextLayout.setVisibility(View.GONE);
-                holder.leftImgLayout.setVisibility(View.VISIBLE);
-                holder.leftImg.setImageBitmap(msg.getImg_content());
+            if (Msg.TYPE_TEXT == msg.getContent_type()) { // 信息内容为文本
+                holder.leftTextLayout.setVisibility(View.VISIBLE); // 将左侧文本信息框布局设为可见
+                holder.leftImgLayout.setVisibility(View.GONE); // 将左侧图片信息框布局设为不可见
+                holder.leftText.setText(msg.getText_content()); // 设置文本框内容
+            } else if (Msg.TYPE_IMG == msg.getContent_type()) { // 信息内容为图片
+                holder.leftTextLayout.setVisibility(View.GONE); // 将左侧文本信息框布局设为不可见
+                holder.leftImgLayout.setVisibility(View.VISIBLE); // 将左侧图片信息框布局设为可见
+                holder.leftImg.setImageBitmap(msg.getImg_content()); // 设置图片框信息
             }
         } else if (Msg.TYPE_SEND == msg.getType()) {
             holder.leftTextLayout.setVisibility(View.GONE);
@@ -58,7 +58,7 @@ public class MsgAdapter extends RecyclerView.Adapter<MsgAdapter.ViewHolder> {
         return msgList.size();
     }
 
-    static class ViewHolder extends RecyclerView.ViewHolder {
+    static class ViewHolder extends RecyclerView.ViewHolder { // 内部类，定义各布局组件
         LinearLayout leftTextLayout;
         LinearLayout rightTextLayout;
         LinearLayout leftImgLayout;

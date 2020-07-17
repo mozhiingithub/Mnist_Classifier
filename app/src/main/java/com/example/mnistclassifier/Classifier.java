@@ -42,7 +42,7 @@ public class Classifier {
         ByteBuffer byteBuffer = bitMap2ByteBuffer(bitmap);//将Bitmap格式的图片转成模型所需的ByteBuffer格式
         model.run(byteBuffer, probability);//运行模型，获取概率分布
         int max_idx = 0;
-        for (int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) { // 找到置信度最高的数字
             if (probability[0][i] >= probability[0][max_idx]) {
                 max_idx = i;
             }
