@@ -55,8 +55,7 @@ public class MainActivity extends AppCompatActivity {
 
         doctor = new Doctor(this);
 
-        String welcome = "欢迎使用柑橘叶片疾病诊断系统。\n请问您要诊断的叶片位于顶梢还是基枝？";
-        msgManager.addTextMsg(welcome, Msg.TYPE_RECEIVE); // 信息列表里添加欢迎语
+
 
 
         //检查权限
