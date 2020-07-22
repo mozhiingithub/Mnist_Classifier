@@ -24,6 +24,8 @@ public class Doctor {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        msgManager.addTextMsg("欢迎使用柑橘叶片疾病诊断系统。", Msg.TYPE_RECEIVE); // 信息列表里添加欢迎语
+        msgManager.addTextMsg("请问您要诊断的叶片位于顶梢还是基枝？", Msg.TYPE_RECEIVE);
     }
 
     public void diagnose() {//对用户提供的信息进行诊断
@@ -97,9 +99,21 @@ public class Doctor {
                                 msgManager.addTextMsg("您的顶梢叶片呈斑驳型黄化特征，您的柑橘可能患黄龙病。", Msg.TYPE_RECEIVE);
                                 status = Status.ASK_POSITION;//诊断结束，节点状态回到原始
                                 break;
-                            default://识别显示叶片有缺素症状，需要进一步判断
-                                msgManager.addTextMsg("您的顶梢叶片有缺素症状。请问柑橘是否有大量落叶？", Msg.TYPE_RECEIVE);
+                            case 3:
+                                msgManager.addTextMsg("您的顶梢叶片有缺锌症状。请问柑橘是否有大量落叶？", Msg.TYPE_RECEIVE);
                                 status = Status.ASK_FALL;//切换至询问落叶状态
+                                break;
+                            case 4:
+                                msgManager.addTextMsg("您的顶梢叶片有缺锰症状。请问柑橘是否有大量落叶？", Msg.TYPE_RECEIVE);
+                                status = Status.ASK_FALL;//切换至询问落叶状态
+                                break;
+                            case 5:
+                                msgManager.addTextMsg("您的顶梢叶片有缺镁症状。请问柑橘是否有大量落叶？", Msg.TYPE_RECEIVE);
+                                status = Status.ASK_FALL;//切换至询问落叶状态
+                                break;
+                            default:
+                                msgManager.addTextMsg("您的顶梢叶片有一定程度的黄化，但病因非黄龙病或生理性缺素。", Msg.TYPE_RECEIVE);
+                                status = Status.ASK_POSITION;//诊断结束，节点状态回到原始
                         }
                         break;
                     case POSITION_BASE://基枝
@@ -107,14 +121,17 @@ public class Doctor {
                             case 0:
                                 msgManager.addTextMsg("您的基枝叶片非常健康。", Msg.TYPE_RECEIVE);
                                 break;
-                            case 1:
-                                msgManager.addTextMsg("您的基枝叶片呈均匀型黄化特征，患黄龙病可能性较低。", Msg.TYPE_RECEIVE);
+                            case 3:
+                                msgManager.addTextMsg("您的柑橘可能生理性缺锌。", Msg.TYPE_RECEIVE);
                                 break;
-                            case 2:
-                                msgManager.addTextMsg("您的基枝叶片呈斑驳型黄化特征，患黄龙病可能性较低。", Msg.TYPE_RECEIVE);
+                            case 4:
+                                msgManager.addTextMsg("您的柑橘可能生理性缺锰。", Msg.TYPE_RECEIVE);
                                 break;
-                            default://识别显示叶片有缺素症状
-                                msgManager.addTextMsg("您的柑橘可能有生理性缺素。", Msg.TYPE_RECEIVE);
+                            case 5:
+                                msgManager.addTextMsg("您的柑橘可能生理性缺镁。", Msg.TYPE_RECEIVE);
+                                break;
+                            default:
+                                msgManager.addTextMsg("您的基枝叶片有一定程度的黄化，但病因非黄龙病或生理性缺素。", Msg.TYPE_RECEIVE);
                         }
                         status = Status.ASK_POSITION;//诊断结束，节点状态回到原始
                         break;
