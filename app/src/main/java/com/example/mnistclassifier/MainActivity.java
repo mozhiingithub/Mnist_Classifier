@@ -41,6 +41,19 @@ public class MainActivity extends AppCompatActivity {
     private List<Msg> msgList; // 信息列表
     private MsgManager msgManager;//信息列表管理器
 
+    private enum Status {
+        ASK_POSITION,
+        POSITION_TOP,
+        POSITION_BASE,
+        TOP_NORMAL,
+        TOP_ABNORMAL,
+        FALL,
+        NO_FALL;
+    }
+
+    private Status status;
+
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -54,6 +67,10 @@ public class MainActivity extends AppCompatActivity {
         recyclerView.setLayoutManager(layoutManager); // 聊天信息框添加一个布局管理者
         recyclerView.setAdapter(msgAdapter); // 聊天信息框添加一个适配器
         msgManager = new MsgManager(msgList, recyclerView, msgAdapter); // 初始化信息列表管理器
+
+        String welcome = "欢迎使用柑橘叶片疾病诊断系统。\n请问您要诊断的叶片位于顶梢还是基枝？";
+        msgManager.addTextMsg(welcome, Msg.TYPE_RECEIVE);
+        status = Status.ASK_POSITION;
 
 
         //检查权限
@@ -119,7 +136,7 @@ public class MainActivity extends AppCompatActivity {
                     String res = classifier.classify(bitmap);
 
                     // 生成一个新的图片信息，加入信息列表并显示
-                    msgManager.addTextMsg(res,Msg.TYPE_RECEIVE);
+                    msgManager.addTextMsg(res, Msg.TYPE_RECEIVE);
 
                 } catch (NullPointerException e) {
                     Log.e(TAG, "获取数据失败");
