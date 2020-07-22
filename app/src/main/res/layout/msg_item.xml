@@ -16,8 +16,9 @@
     <LinearLayout
         android:id="@+id/left_text_layout"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="left"
+        android:layout_marginRight="60dp"
         android:background="@android:color/background_light"
         android:orientation="horizontal">
 
@@ -36,8 +37,9 @@
     <LinearLayout
         android:id="@+id/right_text_layout"
         android:layout_width="wrap_content"
-        android:layout_height="60dp"
+        android:layout_height="wrap_content"
         android:layout_gravity="right"
+        android:layout_marginLeft="60dp"
         android:background="@android:color/holo_green_light"
         android:orientation="horizontal">
 
