@@ -107,12 +107,20 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 String content = editText.getText().toString(); // 获取文本框内容
+                msgManager.addTextMsg(content, Msg.TYPE_SEND);
                 editText.setText(""); // 将文本框清零
-                int len = content.length();
-                if (0 != len) { // 获取文本内容非空
-                    msgManager.addTextMsg(content, Msg.TYPE_SEND); // 新建一个发送侧文本信息
-                    String reply = "你方才输入文本的长度为：" + String.valueOf(len) + "。";
-                    msgManager.addTextMsg(reply, Msg.TYPE_RECEIVE);
+                switch (status) {
+                    case ASK_POSITION:
+                        switch (content) {
+                            case "顶梢":
+                                msgManager.addTextMsg("请上传盯梢叶片的图片。", Msg.TYPE_RECEIVE);
+                                break;
+                            case "基枝":
+                                msgManager.addTextMsg("请上传基枝叶片的图片。", Msg.TYPE_RECEIVE);
+                                break;
+                            default:
+                                msgManager.addTextMsg("请回答正确的部位名称（顶梢或基枝）。", Msg.TYPE_RECEIVE);
+                        }
                 }
             }
         });
