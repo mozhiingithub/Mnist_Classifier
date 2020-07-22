@@ -39,7 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView; // 聊天信息框
     private MsgAdapter msgAdapter; // 聊天信息框适配器
     private List<Msg> msgList; // 信息列表
-    private MsgManager msgManager;//信息列表管理器
+    protected MsgManager msgManager;//信息列表管理器
 
     private enum Status {
         ASK_POSITION,
