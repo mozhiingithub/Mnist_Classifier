@@ -33,4 +33,8 @@ public class MsgManager {
         Msg msg = new Msg(content, type);
         addMsg(msg);
     }
+
+    public Msg getLastMsg() {
+        return msgList.get(msgList.size() - 1);
+    }
 }
