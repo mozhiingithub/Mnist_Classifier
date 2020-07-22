@@ -39,6 +39,7 @@ public class MainActivity extends AppCompatActivity {
     private RecyclerView recyclerView; // 聊天信息框
     private MsgAdapter msgAdapter; // 聊天信息框适配器
     private List<Msg> msgList; // 信息列表
+    private MsgManager msgManager;//信息列表管理器
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -52,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager); // 聊天信息框添加一个布局管理者
         recyclerView.setAdapter(msgAdapter); // 聊天信息框添加一个适配器
+        msgManager = new MsgManager(msgList, recyclerView, msgAdapter); // 初始化信息列表管理器
 
 
         //检查权限
@@ -91,15 +93,9 @@ public class MainActivity extends AppCompatActivity {
                 editText.setText(""); // 将文本框清零
                 int len = content.length();
                 if (0 != len) { // 获取文本内容非空
-                    Msg sendText = new Msg(content, Msg.TYPE_SEND); // 新建一个发送侧文本信息
-                    msgList.add(sendText); // 将信息添加进列表
-                    msgAdapter.notifyItemInserted(msgList.size() - 1); // 示意聊天框有新信息加入
-                    recyclerView.scrollToPosition(msgList.size() - 1); // 将聊天列表跳转至最下面
+                    msgManager.addTextMsg(content, Msg.TYPE_SEND); // 新建一个发送侧文本信息
                     String reply = "你方才输入文本的长度为：" + String.valueOf(len) + "。";
-                    Msg replyText = new Msg(reply, Msg.TYPE_RECEIVE);
-                    msgList.add(replyText);
-                    msgAdapter.notifyItemInserted(msgList.size() - 1);
-                    recyclerView.scrollToPosition(msgList.size() - 1);
+                    msgManager.addTextMsg(reply, Msg.TYPE_RECEIVE);
                 }
             }
         });
@@ -116,22 +112,15 @@ public class MainActivity extends AppCompatActivity {
                     Bitmap bitmap = BitmapFactory.decodeStream(this.getContentResolver().openInputStream(uri));
 
                     // 生成一个新的图片信息，加入信息列表并显示
-                    Msg sendImg = new Msg(bitmap, Msg.TYPE_SEND);
-                    msgList.add(sendImg);
-                    msgAdapter.notifyItemInserted(msgList.size() - 1);
-                    recyclerView.scrollToPosition(msgList.size() - 1);
+                    msgManager.addImgMsg(bitmap, Msg.TYPE_SEND);
 
                     // 对图片进行分类
                     Classifier classifier = new Classifier(this);
                     String res = classifier.classify(bitmap);
 
                     // 生成一个新的图片信息，加入信息列表并显示
-                    Msg receiveText = new Msg(res, Msg.TYPE_RECEIVE);
-                    msgList.add(receiveText);
-                    msgAdapter.notifyItemInserted(msgList.size() - 1);
-                    recyclerView.scrollToPosition(msgList.size() - 1);
+                    msgManager.addTextMsg(res,Msg.TYPE_RECEIVE);
 
-//                    Toast.makeText(this, res, Toast.LENGTH_SHORT).show();
                 } catch (NullPointerException e) {
                     Log.e(TAG, "获取数据失败");
                 } catch (IOException e) {
