@@ -17,7 +17,7 @@ public class Doctor {
     private MsgManager msgManager;
 
     public Doctor(MainActivity mainActivity) {
-        this.msgManager = mainActivity.msgManager;
+        this.msgManager = mainActivity.getMsgManager();
         status = Status.ASK_POSITION;
         try {
             classifier = new Classifier(mainActivity);
@@ -123,5 +123,9 @@ public class Doctor {
 
         }
 
+    }
+
+    public boolean waitForImg() {
+        return status == Status.POSITION_TOP || status == Status.POSITION_BASE;
     }
 }
