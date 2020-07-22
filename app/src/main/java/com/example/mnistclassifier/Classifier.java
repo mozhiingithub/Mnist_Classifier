@@ -37,7 +37,7 @@ public class Classifier {
     }
 
     //分类方法，传参为格式为Bitmap的图片信息。
-    public String classify(Bitmap bitmap) {
+    public int classify(Bitmap bitmap) {
         bitmap = Bitmap.createScaledBitmap(bitmap, size, size, true);//将任意规格的图像缩放为28*28
         ByteBuffer byteBuffer = bitMap2ByteBuffer(bitmap);//将Bitmap格式的图片转成模型所需的ByteBuffer格式
         model.run(byteBuffer, probability);//运行模型，获取概率分布
@@ -47,7 +47,7 @@ public class Classifier {
                 max_idx = i;
             }
         }
-        return "识别结果为：" + String.valueOf(max_idx) + "，置信度为：" + String.valueOf(probability[0][max_idx]);
+        return max_idx;
     }
 
     // 将Bitmap格式的图片转成模型所需的ByteBuffer格式
