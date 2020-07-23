@@ -1,6 +1,7 @@
 package com.example.mnistclassifier;
 
 import java.io.IOException;
+import java.util.List;
 
 public class Doctor {
     private enum Status {
@@ -144,5 +145,13 @@ public class Doctor {
 
     public boolean waitForImg() {
         return status == Status.POSITION_TOP || status == Status.POSITION_BASE;
+    }
+
+    private static class Vertex{
+        private List<Edge> outEdges;
+    }
+
+    private static class Edge{
+        
     }
 }

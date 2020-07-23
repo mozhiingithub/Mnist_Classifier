@@ -9,7 +9,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -21,9 +20,9 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
+
+import com.example.mnistclassifier.Doctor.Doctor;
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -34,28 +33,31 @@ public class MainActivity extends AppCompatActivity {
     private final static String TAG = "MainActivity";
     private final static int GET_PERMISSION = 123; // 获取权限的请求码
     private final static int GET_PHOTO = 321; // 获取图片的请求码
-    private EditText editText; // 文本发送框
+    private EditText editText; // 文本框
     private MsgManager msgManager;//信息列表管理器
-    private Doctor doctor;
+    private Doctor doctor;//医生
+    private Classifier classifier;//图像识别模型分类器
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main_layout);
-        editText = findViewById(R.id.input_text);
+        editText = findViewById(R.id.input_text);//初始化文本框
         Button button = findViewById(R.id.send_button);// 发送按钮
-        List<Msg> msgList = new ArrayList<>();// 信息列表
+        List<Msg> msgList = new ArrayList<>();// 新建一个信息列表
         MsgAdapter msgAdapter = new MsgAdapter(msgList); // 适配器适配信息列表
-        RecyclerView recyclerView = findViewById(R.id.msg_recycler_view);// 聊天信息框
+        RecyclerView recyclerView = findViewById(R.id.msg_recycler_view);// 初始化聊天信息框
         LinearLayoutManager layoutManager = new LinearLayoutManager(this);
         recyclerView.setLayoutManager(layoutManager); // 聊天信息框添加一个布局管理者
         recyclerView.setAdapter(msgAdapter); // 聊天信息框添加一个适配器
         msgManager = new MsgManager(msgList, recyclerView, msgAdapter); // 初始化信息列表管理器
-
-        doctor = new Doctor(this);
-
-
+        doctor = new Doctor();//初始化医生
+        try {
+            classifier = new Classifier(this);//初始化分类器
+        } catch (IOException e) {
+            Log.e(TAG, "分类器初始化失败");
+        }
 
 
         //检查权限
@@ -97,7 +99,8 @@ public class MainActivity extends AppCompatActivity {
                 if (!"".equals(content)) {
                     msgManager.addTextMsg(content, Msg.TYPE_SEND);
                     editText.setText(""); // 将文本框清零
-                    doctor.diagnose();
+                    String doctor_reply = doctor.response(content);//医生获知用户的内容，予以回复
+                    msgManager.addTextMsg(doctor_reply, Msg.TYPE_RECEIVE);
                 }
             }
         });
@@ -116,7 +119,13 @@ public class MainActivity extends AppCompatActivity {
                     // 生成一个新的图片信息，加入信息列表并显示
                     msgManager.addImgMsg(bitmap, Msg.TYPE_SEND);
 
-                    doctor.diagnose();
+                    int cls_result = classifier.classify(bitmap);//分类器对图像进行分类
+                    String result;
+                    if (cls_result > 5) {
+                        result = "other";
+                    } else result = String.valueOf(cls_result);
+                    String doctor_reply = doctor.response(result);//医生获知识别结果，予以回复
+                    msgManager.addTextMsg(doctor_reply, Msg.TYPE_RECEIVE);
 
 
                 } catch (NullPointerException e) {
@@ -144,9 +153,5 @@ public class MainActivity extends AppCompatActivity {
         }
 
 
-    }
-
-    public MsgManager getMsgManager() {
-        return msgManager;
     }
 }
